@@ -1,0 +1,20 @@
+<h2>Create a new Event</h2>
+
+<form [formGroup]="eventForm" (ngSubmit)="onSubmit()">
+  <label>
+    Title:
+    <input type="text" formControlName="title">
+  </label>
+  <label>
+    Datetime:
+    <input type="text" formControlName="datetime">
+  </label>
+  <label>
+    Attendees:
+    <select multiple formControlName="attendees">
+      <option value="">Choose your attendees</option>
+      <option *ngFor="let user of users" [ngValue]="user.id">{{ user.name }}</option>
+    </select>
+  </label>
+  <button type="submit" [disabled]="!eventForm.valid">Submit</button>
+</form>
