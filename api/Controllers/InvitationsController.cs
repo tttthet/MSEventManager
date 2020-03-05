@@ -34,10 +34,15 @@ namespace Api.Controllers
 		.ToListAsync();
 	}
 
-	// invitations by coordinator
-	[HttpGet("{id}")]
-	public async Task<ActionResult<IEnumerable<Invitation>>> GetInvitationsByCoordinator(long id)
+	// invitations by faculty / Users
+	//[HttpGet("{id}")]
+	[HttpGet("user")]
+	//public async Task<ActionResult<IEnumerable<Invitation>>> GetInvitationsByCoordinator(long id)
+	public async Task<ActionResult<IEnumerable<Invitation>>> GetInvitationsByUser()
 	{
+	    /* TODO pull the user from identity provider */
+	    var id = 1;
+
 	    return await _context.Invitations
 		.Where(x => x.AttendeeId == id)
 		.Select(x => new Invitation

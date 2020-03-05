@@ -14,11 +14,11 @@ namespace Api.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class TodoItemsController : ControllerBase
+    public class EventsController : ControllerBase
     {
         private readonly EventManagerContext _context;
 
-        public TodoItemsController(EventManagerContext context)
+        public EventsController(EventManagerContext context)
         {
             _context = context;
         }
@@ -27,18 +27,38 @@ namespace Api.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Event>>> GetEvents()
         {
-            return await _context.Events.Select(x => new Event
-	    {
-		Id = x.Id,
-		Title = x.Title,
-		CoordinatorId = x.CoordinatorId,
-		DateTime = x.DateTime
-	    }).ToListAsync();
+            return await _context.Events
+		.Select(x => new Event
+		{
+		    Id = x.Id,
+		    Title = x.Title,
+		    CoordinatorId = x.CoordinatorId,
+		    DateTime = x.DateTime
+		}).ToListAsync();
+        }
+
+        // GET: api/events
+        [HttpGet("coordinator")]
+        public async Task<ActionResult<IEnumerable<Event>>> GetEventsByCoordinator()
+        {
+	    /* get user from identity provider */
+	    var id = 0;
+	    
+            return await _context.Events
+		.Where(x => x.CoordinatorId == id)
+		.Select(x => new Event
+		{
+		    Id = x.Id,
+		    Title = x.Title,
+		    CoordinatorId = x.CoordinatorId,
+		    DateTime = x.DateTime
+		}).ToListAsync();
         }
 
 	// get events & attendees
         [HttpGet("attendees")]
-        public async Task<ActionResult<List<EventVM>>> GetEventsWithAttendees()
+        //public async Task<ActionResult<List<EventVM>>> GetEventsWithAttendees()
+        public List<EventVM> GetEventsWithAttendees()
         {
 	    /*
 	    DataLoadOptions ds = new DataLoadOptions();
@@ -48,22 +68,36 @@ namespace Api.Controllers
 
 	    var query = from e in _context.Events select e;
 	    */ 
+	    return (from e in _context.Events
+		    from i in _context.Set<Invitation>().Where(i => i.EventId == e.Id).GroupBy(i => i.EventId)
+//		join i in _context.Invitations on e.Id equals i.EventId into x
+//		    group i by i.EventId into x//).ToList();
+		    select new EventVM
+		    {
+			Id = e.Id,
+			Title = e.Title,
+			CoordinatorId = e.CoordinatorId,
+			DateTime = e.DateTime,
+			//AttendeeId = i.AttendeeId
+			Invitations = i
+		    }).ToList();
 
             //return await _context.TodoItems.ToListAsync();
-            return await _context.Events
+            /*return _context.Events
 		.GroupJoin(_context.Invitations,
-		      e => e.Id,
-		      i => i.EventId,
-		      (e, i) => new EventVM
-		      {
-			  Id = e.Id,
-			  Title = e.Title,
-			  CoordinatorId = e.CoordinatorId,
-			  DateTime = e.DateTime,
-			  //AttendeeId = i.AttendeeId
-			  Invitations = i
-		      }
-			  )
+			   e => e.Id,
+			   i => i.EventId,
+			   (e, i) => new EventVM
+			   {
+			       Id = e.Id,
+			       Title = e.Title,
+			       CoordinatorId = e.CoordinatorId,
+			       DateTime = e.DateTime,
+			       //AttendeeId = i.AttendeeId
+			       Invitations = i
+			   })
+		.Select(x => x)
+		.ToList();*/
 		//.GroupBy(x => x.Id)
 		/*.SelectMany(x => new
 			//(e, i) => new EventVM
@@ -72,8 +106,7 @@ namespace Api.Controllers
 			  Title = x.Title,
 			  CoordinatorId = e.CoordinatorId,
 			  DateTime = e.DateTime,
-			  Users = string.join(',', x.Select(ii => ii.AttendeeId).ToList())
-		      })*/.ToListAsync();
+			  Users = string.join(',', x.Select(ii => ii.AttendeeId).ToList())*/
         }
 
         // GET: api/TodoItems/5

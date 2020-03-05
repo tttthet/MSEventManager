@@ -1,3 +1,9 @@
+<h2 *ngIf="context === 'coordinator'">Your Events</h2>
+<p *ngIf="context === 'coordinator'">These are the events that you have created</p>
+
+<nav>
+  <a routerLink="/events/new" routerLinkActive="active">Create Event</a>
+</nav>
 
 <ul>
   <li *ngFor="let event of events">

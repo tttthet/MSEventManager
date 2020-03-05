@@ -35,7 +35,7 @@ namespace Api.Migrations
                     table.PrimaryKey("PK_Invitations", x => new { x.EventId, x.AttendeeId });
                 });
 
-            migrationBuilder.CreateTable(
+            /*migrationBuilder.CreateTable(
                 name: "TodoItems",
                 columns: table => new
                 {
@@ -47,7 +47,7 @@ namespace Api.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_TodoItems", x => x.Id);
-                });
+                });*/
 
             migrationBuilder.CreateTable(
                 name: "Users",

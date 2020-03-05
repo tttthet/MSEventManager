@@ -10,6 +10,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { CreateEventComponent } from './create-event/create-event.component';
 import { AppComponent } from './app.component';
 import { EventsComponent } from './events/events.component';
+import { InvitationsComponent } from './invitations/invitations.component';
 
 /*const appRoutes: Routes = [
   { path: 'event/new', component: CreateEventComponent },
@@ -22,7 +23,8 @@ import { EventsComponent } from './events/events.component';
   declarations: [
     AppComponent,
     CreateEventComponent,
-    EventsComponent
+    EventsComponent,
+    InvitationsComponent
   ],
   imports: [
     BrowserModule,

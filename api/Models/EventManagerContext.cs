@@ -6,11 +6,8 @@ namespace Api.Models
 {
     public class EventManagerContext : DbContext
     {
-	public EventManagerContext() : base()
-	{
-	}
+	public EventManagerContext() : base() {	}
 
-	//public DbSet<TodoItem> TodoItems { get; set; }
 	public DbSet<Event> Events { get; set; }
 	public DbSet<User> Users { get; set; }
 	public DbSet<Invitation> Invitations { get; set; }
@@ -65,7 +62,7 @@ namespace Api.Models
     public class EventVM : Event
     {
         public int?[] Users { get; set; }
-        public int? UserState { get; set; }
         public IEnumerable<Invitation> Invitations { get; set; }
+        //public Invitation Invitation { get; set; }
     }
 }

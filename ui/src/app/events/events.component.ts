@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
 
 import { ApiService } from "../api.service";
 import { Event } from "../app.model";
@@ -10,10 +11,13 @@ import { Event } from "../app.model";
 })
 export class EventsComponent implements OnInit {
   events: Event[];
-  api: ApiService;
+  context: string;
 
-  constructor(api: ApiService) {
+  constructor(private route: ActivatedRoute, private api: ApiService) {
     this.api = api;
+    this.route.paramMap.subscribe(params => {
+      this.context = params.get('context');
+    })
   }
 
   ngOnInit() {

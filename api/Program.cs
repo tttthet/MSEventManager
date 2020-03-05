@@ -17,6 +17,15 @@ namespace Api
         {
             CreateHostBuilder(args).Build().Run();
 
+	    /* appsetting.json is new App.Config, here's access to it
+	    using (var scope = Host.Services.CreateScope())
+	    {
+		var services = scope.ServiceProvider;
+		var config = services.GetService<IConfiguration>(); // the key/fix!
+		var s = config.GetValue<string>("SeedDb");
+		var doSeed = bool.Parse(s); // works!
+	    }*/
+
 	    using (var db = new EventManagerContext())
             {
                 // Create
